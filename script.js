@@ -57,13 +57,28 @@ bemVindo();
 
 // Opção 1
 function novoVeiculo() {
-    const veiculo = {
-        id: Date.now().toString(36).toUpperCase(), // o .toString
-        modelo: prompt(`Digite o modelo do veículo:`),
-        marca: prompt(`Digite a marca do veículo:`),
-        ano: Number(prompt(`Digite o Ano do veículo:`)),
-        cor: prompt(`Digite a cor do veículo:`),
-        preco: Number(prompt(`Digite o preço do veículo`))
+    let modelo = '', marca = '', ano = '', cor = '', preco = '', veiculo = {}
+    while (modelo === '') modelo = prompt(`Digite o modelo do veículo:`)
+    if (modelo === null) { veiculo = null; bemVindo() } else {
+        while (marca === '') marca = prompt(`Digite a marca do veículo:`)
+        if (marca === null) { veiculo = null; bemVindo() } else {
+            while (ano === '') ano = prompt(`Digite o Ano do veículo:`)
+            if (ano === null) { veiculo = null; bemVindo() } else {
+                while (cor === '') cor = prompt(`Digite a cor do veículo:`)
+                if (cor === null) { veiculo = null; bemVindo() } else {
+                    while (preco === '') preco = prompt(`Digite o preço do veículo`)
+                    if (preco === null) { veiculo = null; bemVindo() }
+                    veiculo = {
+                        id: Date.now().toString(36).toUpperCase(), // o .toString(36) transforma o sistema decimal do número em um sistema hexatrigesimal, em que a contagem a partir do 9 utiliza as letras iniciando pelo 'a' valendo 10 até o 'z' valendo 35. Cada casa hexatrigesimal suporta 36 unidades ao invés de apenas 10.
+                        modelo: modelo,
+                        marca: marca,
+                        ano: isNaN(parseFloat(ano)) ? 0 : parseFloat(ano),
+                        cor: cor,
+                        preco: isNaN(parseFloat(preco)) ? 0 : parseFloat(preco)
+                    }
+                }
+            }
+        }
     }
     listaVeiculos.push(veiculo)
     listaVeiculos.sort((a, b) => a.preco - b.preco) // método sort utilizado para ordenar os objetos do array baseado no preço, do menor ao maior. Toda vez que um novo veículo é adicionado ele entra em comparação com os demais e se posiciona ordenadamente de acordo com os preços já listados.
@@ -86,10 +101,10 @@ function filtrarPorMarca(list = listaVeiculos) {
     let marcas = []
     list.forEach(veiculo => !marcas.includes(veiculo.marca) ? marcas.push(veiculo.marca) : null)
     if (marcas.length > 0) {
-        let numeroMarca = prompt(`Digite o número da marca a qual você deseja filtrar\nMarcas disponíveis:\n${marcas.map((m, i) => `   ${i + 1} - ${m}`).join('\n')}`);
+        let numeroMarca = prompt(`Digite o número da marca a qual você deseja filtrar\nMarcas disponíveis:\n${marcas.map((m, i) => `   ${i + 1} - ${m}`).join('\n')}`); // o .map retorna um novo array com os elementos transformados pela operação inserida. Mas nesse caso o map foi utilizado apenas para iterar os elementos e expor seus respectivos índices
         if (numeroMarca === null) {
             bemVindo()
-        } else if (marcas.length >= numeroMarca && numeroMarca > 1) {
+        } else if (marcas.length >= numeroMarca && numeroMarca > 0) {
             listarVeiculos(list.filter(veiculo => veiculo.marca === marcas[numeroMarca - 1]))
         } else {
             alert(`Marca não encontrada!\nDigite uma número de marca válido!`)
