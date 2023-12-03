@@ -1,5 +1,5 @@
 const listaVeiculos = [
-    { id: 'LP1T6TEF', modelo: 'Fiesta', marca: 'Ford', ano: 1996, cor: 'Preto', preco: 6000 },
+    { id: 'LIPOTUFO', modelo: 'Fiesta', marca: 'Ford', ano: 1996, cor: 'Preto', preco: 6000 },
     { id: 'LP1TG0L0', modelo: 'Gol', marca: 'Volkswagen', ano: 2000, cor: 'Vermelho', preco: 10000 },
     { id: 'LP1T123X', modelo: 'Uno', marca: 'Fiat', ano: 2000, cor: 'Branco', preco: 10500 },
     { id: 'LP1TCRTE', modelo: 'Chevette', marca: 'Chevrolet', ano: 1990, cor: 'Verde', preco: 11000, manutencao: true },
@@ -200,65 +200,52 @@ function atualizarVeiculo(list = listaVeiculos) {
     if (identificador === '') { atualizarVeiculo(); return }
     const verificador = identificador.toUpperCase()
     const indiceVeiculo = list.findIndex(veiculo => veiculo.id === verificador)
+    if (indiceVeiculo === -1) { alert(`Veículo não encontrado!\nConsulte a opção 2 para verificar os identificadores referentes aos veículos disponíveis.`); bemVindo(); return }
     if (list[indiceVeiculo].vinculo && list[indiceVeiculo].vinculo !== usuarioLogado) {
-        alert(`Este veículo está vinculado à: ${list[indiceVeiculo].vinculo} e você não tem permissão para atualizá-lo!`);
-        atualizarVeiculo(); return
+        alert(`Este veículo está vinculado à: ${list[indiceVeiculo].vinculo} e você não tem permissão para atualizá-lo!`); atualizarVeiculo(); return
     }
     const nomeVeiculo = list[indiceVeiculo].modelo
 
-    if (indiceVeiculo === -1) {
-        alert(`Veículo não encontrado!\n Consulte a opção 2 para verificar os identificadores referentes aos veículos disponíveis.`)
-        bemVindo()
-    } else {
-        let cor = '', preco = ''
+    let cor = '', preco = ''
 
-        const novaCor = confirm(`Você deseja alterar a cor (${list[indiceVeiculo].cor}) do veículo ${nomeVeiculo}?`)
-        if (novaCor) {
-            while (cor === '') cor = prompt(`Qual a nova cor?`)
-            if (cor !== null) {
-                list[indiceVeiculo].cor = cor;
-                usuarioLogado !== 'geral' ? list[indiceVeiculo].vinculo = usuarioLogado.user : null
-            }
+    const novaCor = confirm(`Você deseja alterar a cor (${list[indiceVeiculo].cor}) do veículo ${nomeVeiculo}?`)
+    if (novaCor) {
+        while (cor === '') cor = prompt(`Qual a nova cor?`)
+        if (cor !== null) {
+            list[indiceVeiculo].cor = cor;
+            usuarioLogado !== 'geral' ? list[indiceVeiculo].vinculo = usuarioLogado.user : null
         }
-
-        const novoPreco = confirm(`Você deseja alterar o preço (R$ ${list[indiceVeiculo].preco.toLocaleString('pt-BR')}) do veículo ${nomeVeiculo}?`)
-        if (novoPreco) {
-            while (preco === '' || preco < 0 || isNaN(preco)) preco = prompt(`Qual a nova preço?`)
-            if (preco !== null) {
-                list[indiceVeiculo].preco = isNaN(parseFloat(preco)) ? 0 : parseFloat(preco);
-                usuarioLogado !== 'geral' ? list[indiceVeiculo].vinculo = usuarioLogado.user : null
-            }
-        }
-
-        if (novaCor && cor || novoPreco && preco) { alert(`Veículo ${nomeVeiculo} atualizado com sucesso!`) }
-        bemVindo()
     }
+
+    const novoPreco = confirm(`Você deseja alterar o preço (R$ ${list[indiceVeiculo].preco.toLocaleString('pt-BR')}) do veículo ${nomeVeiculo}?`)
+    if (novoPreco) {
+        while (preco === '' || preco < 0 || isNaN(preco)) preco = prompt(`Qual a nova preço?`)
+        if (preco !== null) {
+            list[indiceVeiculo].preco = isNaN(parseFloat(preco)) ? 0 : parseFloat(preco);
+            usuarioLogado !== 'geral' ? list[indiceVeiculo].vinculo = usuarioLogado.user : null
+        }
+    }
+
+    if (novaCor && cor || novoPreco && preco) { alert(`Veículo ${nomeVeiculo} atualizado com sucesso!`) }
+    bemVindo()
 }
 
 // Opção 5
 function removerVeiculo(list = listaVeiculos) {
-    const identificador = prompt(`Digite o código identificador do veículo que você deseja remover:`)
-    if (identificador === null) { bemVindo(); return }
+    const identificador = prompt(`Digite o código identificador do veículo que você deseja atualizar:`)
+    if (identificador === null) { bemVindo(); return } // if cancel retorna ao menu inicial
     if (identificador === '') { removerVeiculo(); return }
     const verificador = identificador.toUpperCase()
     const indiceVeiculo = list.findIndex(veiculo => veiculo.id === verificador)
+    if (indiceVeiculo === -1) { alert(`Veículo não encontrado!\nConsulte a opção 2 para verificar os identificadores referentes aos veículos disponíveis.`); bemVindo(); return }
     if (list[indiceVeiculo].vinculo && list[indiceVeiculo].vinculo !== usuarioLogado) {
-        alert(`Este veículo está vinculado à: ${list[indiceVeiculo].vinculo} e você não tem permissão para removê-lo!`);
-        removerVeiculo(); return
+        alert(`Este veículo está vinculado à: ${list[indiceVeiculo].vinculo} e você não tem permissão para atualizá-lo!`); removerVeiculo(); return
     }
     const nomeVeiculo = list[indiceVeiculo].modelo
 
-    if (indiceVeiculo === -1) {
-        alert(`Veículo não encontrado!\n Consulte a opção 2 para verificar os identificadores referentes aos veículos disponíveis.`)
-        bemVindo()
-    } else {
-        const remover = confirm(`Você realmente deseja remover o veículo ${nomeVeiculo}?`)
-        if (remover) {
-            list.splice(indiceVeiculo, 1)
-            alert(`Veículo ${nomeVeiculo} removido com sucesso!`)
-        }
-        bemVindo()
-    }
+    const remover = confirm(`Você realmente deseja remover o veículo ${nomeVeiculo}?`)
+    if (remover) { list.splice(indiceVeiculo, 1); alert(`Veículo ${nomeVeiculo} removido com sucesso!`) }
+    bemVindo()
 }
 
 // Opção 6
@@ -382,6 +369,7 @@ function manutencaoCarro(list = listaVeiculos) {
             if (identificador !== null && identificador !== '') {
                 const verificador = identificador.toUpperCase()
                 const indiceVeiculo = list.findIndex(veiculo => veiculo.id === verificador)
+                if (indiceVeiculo === -1) { alert(`Veículo não encontrado!\nConsulte os códigos identificadores referentes aos veículos disponíveis.`); listaManutencao(); adicao(); return }
                 if (list[indiceVeiculo].vinculo && list[indiceVeiculo].vinculo !== usuarioLogado) {
                     alert(`Este veículo está vinculado à: ${list[indiceVeiculo].vinculo} e você não tem permissão para adicioná-lo à manutenção!`);
                     adicao(); return
@@ -413,6 +401,7 @@ function manutencaoCarro(list = listaVeiculos) {
             if (identificador !== null && identificador !== '') {
                 const verificador = identificador.toUpperCase()
                 const indiceVeiculo = list.findIndex(veiculo => veiculo.id === verificador)
+                if (indiceVeiculo === -1) { alert(`Veículo não encontrado!\nConsulte os códigos identificadores referentes aos veículos disponíveis.`); listaManutencao(); remocao(); return }
                 if (list[indiceVeiculo].vinculo && list[indiceVeiculo].vinculo !== usuarioLogado) {
                     alert(`Este veículo está vinculado à: ${list[indiceVeiculo].vinculo} e você não tem permissão para removê-lo da manutenção!`);
                     remocao(); return
